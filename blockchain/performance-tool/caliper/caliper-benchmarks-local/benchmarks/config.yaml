@@ -1,0 +1,28 @@
+test:
+  name: "Hyperledger Fabric v2.5.9 - Benchmark network"
+  workers:
+    type: local
+    number: 2
+  rounds:
+  # =========== Validation Round ================
+    - label: Create Asset - Validation Round
+      txNumber: 5
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5
+      workload:
+        module: benchmarks/createAsset.js
+        
+    - label: Query Asset - Node chaincode
+      description: Get Asset.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 10
+      workload:
+        module: benchmarks/queryAsset.js
+
+  # ===========================================================
+

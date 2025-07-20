@@ -1,0 +1,51 @@
+{
+    "name": "Contract Management-pharmacy",
+    "version": "1.0.0",
+    "client": {
+        "organization": "pharmacy",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "pharmacy": {
+            "mspid": "pharmacyMSP",
+            "peers": [
+                "peer1.pharmacy.com"
+            ],
+            "certificateAuthorities": [
+                "ca.pharmacy.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer1.pharmacy.com": {
+            "url": "localhost:9051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICFzCCAb2gAwIBAgIUYlBd487VVZB+ZwXj+Re0w3iTd4EwCgYIKoZIzj0EAwIw\naDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK\nEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMt\nY2Etc2VydmVyMB4XDTI1MDcyMDEzMjYwMFoXDTQwMDcxNjEzMjYwMFowaDELMAkG\nA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBl\ncmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2Vy\ndmVyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAELX1ERLkRYju5TsAI0j7hzDng\nFefuQyFllD6Xo+BS9zS9wgzVG4XSVyupzdeO9eStbKF5OIHg8QcGC8wL2BCWoKNF\nMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYE\nFBQ9DvW3OEd8HFjD2M6geycbQ4ceMAoGCCqGSM49BAMCA0gAMEUCIQDUwM2oKo9I\nNqng8+WRDebIR02w8dh5ONDoARAO56uTSgIgQtUXT/bGPIDVRytZIsSKB0l8xeU2\nQNnqiG/E5y8ZWAA=\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.pharmacy.com",
+                "hostnameOverride": "peer1.pharmacy.com"
+            }
+        }
+
+	
+    },
+    "certificateAuthorities": {
+        "ca.pharmacy.com": {
+            "url": "https://localhost:9054",
+            "caName": "ca.pharmacy.com",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICFzCCAb2gAwIBAgIUYlBd487VVZB+ZwXj+Re0w3iTd4EwCgYIKoZIzj0EAwIw\naDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK\nEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMt\nY2Etc2VydmVyMB4XDTI1MDcyMDEzMjYwMFoXDTQwMDcxNjEzMjYwMFowaDELMAkG\nA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBl\ncmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2Vy\ndmVyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAELX1ERLkRYju5TsAI0j7hzDng\nFefuQyFllD6Xo+BS9zS9wgzVG4XSVyupzdeO9eStbKF5OIHg8QcGC8wL2BCWoKNF\nMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYE\nFBQ9DvW3OEd8HFjD2M6geycbQ4ceMAoGCCqGSM49BAMCA0gAMEUCIQDUwM2oKo9I\nNqng8+WRDebIR02w8dh5ONDoARAO56uTSgIgQtUXT/bGPIDVRytZIsSKB0l8xeU2\nQNnqiG/E5y8ZWAA=\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "name": "Contract Management-${ORG}",
+    "version": "1.0.0",
+    "client": {
+        "organization": "${ORG}",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "${ORG}": {
+            "mspid": "${ORG}MSP",
+            "peers": [
+                "peer1.${ORG}.com"
+            ],
+            "certificateAuthorities": [
+                "ca.${ORG}.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer1.${ORG}.com": {
+            "url": "grpcs://peer1.${ORG}.com:${P0PORT}",
+            "tlsCACerts": {
+                "pem": "${PEERPEM}"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.${ORG}.com",
+                "hostnameOverride": "peer1.${ORG}.com"
+            }
+        }
+
+	
+    },
+    "certificateAuthorities": {
+        "ca.${ORG}.com": {
+            "url": "https://localhost:${CAPORT}",
+            "caName": "ca.${ORG}.com",
+            "tlsCACerts": {
+                "pem": "${CAPEM}"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

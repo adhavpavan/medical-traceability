@@ -1,0 +1,333 @@
+Organizations:
+  - &ref_1
+    Name: manufacturer
+    ID: manufacturerMSP
+    MSPDir: crypto-config/peerOrganizations/manufacturer.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: >-
+          OR('manufacturerMSP.admin', 'manufacturerMSP.peer',
+          'manufacturerMSP.client')
+      Writers:
+        Type: Signature
+        Rule: OR('manufacturerMSP.admin', 'manufacturerMSP.client')
+      Admins:
+        Type: Signature
+        Rule: OR('manufacturerMSP.admin')
+      Endorsement:
+        Type: Signature
+        Rule: OR('manufacturerMSP.peer')
+    AnchorPeers:
+      - Host: peer1.manufacturer.com
+        Port: '7051'
+  - &ref_2
+    Name: distributor
+    ID: distributorMSP
+    MSPDir: crypto-config/peerOrganizations/distributor.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: >-
+          OR('distributorMSP.admin', 'distributorMSP.peer',
+          'distributorMSP.client')
+      Writers:
+        Type: Signature
+        Rule: OR('distributorMSP.admin', 'distributorMSP.client')
+      Admins:
+        Type: Signature
+        Rule: OR('distributorMSP.admin')
+      Endorsement:
+        Type: Signature
+        Rule: OR('distributorMSP.peer')
+    AnchorPeers:
+      - Host: peer1.distributor.com
+        Port: '8051'
+  - &ref_4
+    Name: pharmacy
+    ID: pharmacyMSP
+    MSPDir: crypto-config/peerOrganizations/pharmacy.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: OR('pharmacyMSP.admin', 'pharmacyMSP.peer', 'pharmacyMSP.client')
+      Writers:
+        Type: Signature
+        Rule: OR('pharmacyMSP.admin', 'pharmacyMSP.client')
+      Admins:
+        Type: Signature
+        Rule: OR('pharmacyMSP.admin')
+      Endorsement:
+        Type: Signature
+        Rule: OR('pharmacyMSP.peer')
+    AnchorPeers:
+      - Host: peer1.pharmacy.com
+        Port: '9051'
+  - &ref_3
+    Name: regulator
+    ID: regulatorMSP
+    MSPDir: crypto-config/peerOrganizations/regulator.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: OR('regulatorMSP.admin', 'regulatorMSP.peer', 'regulatorMSP.client')
+      Writers:
+        Type: Signature
+        Rule: OR('regulatorMSP.admin', 'regulatorMSP.client')
+      Admins:
+        Type: Signature
+        Rule: OR('regulatorMSP.admin')
+      Endorsement:
+        Type: Signature
+        Rule: OR('regulatorMSP.peer')
+    AnchorPeers:
+      - Host: peer1.regulator.com
+        Port: '10051'
+  - Name: orderer
+    ID: ordererMSP
+    MSPDir: crypto-config/ordererOrganizations/orderer.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: OR('ordererMSP.member')
+      Writers:
+        Type: Signature
+        Rule: OR('ordererMSP.member')
+      Admins:
+        Type: Signature
+        Rule: OR('ordererMSP.admin')
+Capabilities:
+  Channel:
+    V2_0: true
+  Orderer:
+    V2_0: true
+  Application:
+    V2_5: true
+Application:
+  ACLs:
+    _lifecycle/CommitChaincodeDefinition: /Channel/Application/Writers
+    _lifecycle/QueryChaincodeDefinition: /Channel/Application/Readers
+    _lifecycle/QueryNamespaceDefinitions: /Channel/Application/Readers
+    lscc/ChaincodeExists: /Channel/Application/Readers
+    lscc/GetDeploymentSpec: /Channel/Application/Readers
+    lscc/GetChaincodeData: /Channel/Application/Readers
+    lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
+    qscc/GetChainInfo: /Channel/Application/Readers
+    qscc/GetBlockByNumber: /Channel/Application/Readers
+    qscc/GetBlockByHash: /Channel/Application/Readers
+    qscc/GetTransactionByID: /Channel/Application/Readers
+    qscc/GetBlockByTxID: /Channel/Application/Readers
+    cscc/GetConfigBlock: /Channel/Application/Readers
+    cscc/GetConfigTree: /Channel/Application/Readers
+    cscc/SimulateConfigTreeUpdate: /Channel/Application/Readers
+    peer/Propose: /Channel/Application/Writers
+    peer/ChaincodeToChaincode: /Channel/Application/Readers
+    event/Block: /Channel/Application/Readers
+    event/FilteredBlock: /Channel/Application/Readers
+  Organizations: null
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: ANY Readers
+    Writers:
+      Type: ImplicitMeta
+      Rule: ANY Writers
+    Admins:
+      Type: ImplicitMeta
+      Rule: MAJORITY Admins
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: MAJORITY Endorsement
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: MAJORITY Endorsement
+  Capabilities:
+    V2_5: true
+Orderer: &ref_0
+  OrdererType: etcdraft
+  EtcdRaft:
+    Consenters:
+      - Host: orderer1.com
+        Port: 7050
+        ClientTLSCert: >-
+          crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.com/tls/server.crt
+        ServerTLSCert: >-
+          crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.com/tls/server.crt
+      - Host: orderer2.com
+        Port: 7050
+        ClientTLSCert: >-
+          crypto-config/ordererOrganizations/orderer.com/orderers/orderer2.com/tls/server.crt
+        ServerTLSCert: >-
+          crypto-config/ordererOrganizations/orderer.com/orderers/orderer2.com/tls/server.crt
+      - Host: orderer3.com
+        Port: 7050
+        ClientTLSCert: >-
+          crypto-config/ordererOrganizations/orderer.com/orderers/orderer3.com/tls/server.crt
+        ServerTLSCert: >-
+          crypto-config/ordererOrganizations/orderer.com/orderers/orderer3.com/tls/server.crt
+  Addresses:
+    - orderer1.com:7050
+    - orderer2.com:7050
+    - orderer3.com:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Organizations:
+    - Name: orderer
+      ID: ordererMSP
+      MSPDir: crypto-config/ordererOrganizations/orderer.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: OR('ordererMSP.member')
+        Writers:
+          Type: Signature
+          Rule: OR('ordererMSP.member')
+        Admins:
+          Type: Signature
+          Rule: OR('ordererMSP.admin')
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: ANY Readers
+    Writers:
+      Type: ImplicitMeta
+      Rule: ANY Writers
+    Admins:
+      Type: ImplicitMeta
+      Rule: MAJORITY Admins
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: ANY Writers
+  Capabilities:
+    V2_0: true
+Channel:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: ANY Readers
+    Writers:
+      Type: ImplicitMeta
+      Rule: ANY Writers
+    Admins:
+      Type: ImplicitMeta
+      Rule: MAJORITY Admins
+  Capabilities:
+    V2_0: true
+Profiles:
+  producer-distributor-channel:
+    Policies:
+      Readers:
+        Type: ImplicitMeta
+        Rule: ANY Readers
+      Writers:
+        Type: ImplicitMeta
+        Rule: ANY Writers
+      Admins:
+        Type: ImplicitMeta
+        Rule: MAJORITY Admins
+    Capabilities:
+      V2_0: true
+    Orderer: *ref_0
+    Application:
+      ACLs:
+        _lifecycle/CommitChaincodeDefinition: /Channel/Application/Writers
+        _lifecycle/QueryChaincodeDefinition: /Channel/Application/Readers
+        _lifecycle/QueryNamespaceDefinitions: /Channel/Application/Readers
+        lscc/ChaincodeExists: /Channel/Application/Readers
+        lscc/GetDeploymentSpec: /Channel/Application/Readers
+        lscc/GetChaincodeData: /Channel/Application/Readers
+        lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
+        qscc/GetChainInfo: /Channel/Application/Readers
+        qscc/GetBlockByNumber: /Channel/Application/Readers
+        qscc/GetBlockByHash: /Channel/Application/Readers
+        qscc/GetTransactionByID: /Channel/Application/Readers
+        qscc/GetBlockByTxID: /Channel/Application/Readers
+        cscc/GetConfigBlock: /Channel/Application/Readers
+        cscc/GetConfigTree: /Channel/Application/Readers
+        cscc/SimulateConfigTreeUpdate: /Channel/Application/Readers
+        peer/Propose: /Channel/Application/Writers
+        peer/ChaincodeToChaincode: /Channel/Application/Readers
+        event/Block: /Channel/Application/Readers
+        event/FilteredBlock: /Channel/Application/Readers
+      Organizations:
+        - *ref_1
+        - *ref_2
+        - *ref_3
+      Policies:
+        Readers:
+          Type: ImplicitMeta
+          Rule: ANY Readers
+        Writers:
+          Type: ImplicitMeta
+          Rule: ANY Writers
+        Admins:
+          Type: ImplicitMeta
+          Rule: MAJORITY Admins
+        LifecycleEndorsement:
+          Type: ImplicitMeta
+          Rule: MAJORITY Endorsement
+        Endorsement:
+          Type: ImplicitMeta
+          Rule: MAJORITY Endorsement
+      Capabilities:
+        V2_5: true
+  distributor-retailer-channel:
+    Policies:
+      Readers:
+        Type: ImplicitMeta
+        Rule: ANY Readers
+      Writers:
+        Type: ImplicitMeta
+        Rule: ANY Writers
+      Admins:
+        Type: ImplicitMeta
+        Rule: MAJORITY Admins
+    Capabilities:
+      V2_0: true
+    Orderer: *ref_0
+    Application:
+      ACLs:
+        _lifecycle/CommitChaincodeDefinition: /Channel/Application/Writers
+        _lifecycle/QueryChaincodeDefinition: /Channel/Application/Readers
+        _lifecycle/QueryNamespaceDefinitions: /Channel/Application/Readers
+        lscc/ChaincodeExists: /Channel/Application/Readers
+        lscc/GetDeploymentSpec: /Channel/Application/Readers
+        lscc/GetChaincodeData: /Channel/Application/Readers
+        lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
+        qscc/GetChainInfo: /Channel/Application/Readers
+        qscc/GetBlockByNumber: /Channel/Application/Readers
+        qscc/GetBlockByHash: /Channel/Application/Readers
+        qscc/GetTransactionByID: /Channel/Application/Readers
+        qscc/GetBlockByTxID: /Channel/Application/Readers
+        cscc/GetConfigBlock: /Channel/Application/Readers
+        cscc/GetConfigTree: /Channel/Application/Readers
+        cscc/SimulateConfigTreeUpdate: /Channel/Application/Readers
+        peer/Propose: /Channel/Application/Writers
+        peer/ChaincodeToChaincode: /Channel/Application/Readers
+        event/Block: /Channel/Application/Readers
+        event/FilteredBlock: /Channel/Application/Readers
+      Organizations:
+        - *ref_2
+        - *ref_4
+        - *ref_3
+      Policies:
+        Readers:
+          Type: ImplicitMeta
+          Rule: ANY Readers
+        Writers:
+          Type: ImplicitMeta
+          Rule: ANY Writers
+        Admins:
+          Type: ImplicitMeta
+          Rule: MAJORITY Admins
+        LifecycleEndorsement:
+          Type: ImplicitMeta
+          Rule: MAJORITY Endorsement
+        Endorsement:
+          Type: ImplicitMeta
+          Rule: MAJORITY Endorsement
+      Capabilities:
+        V2_5: true

@@ -1,0 +1,655 @@
+{
+  "info": {
+    "name": "Medical Traceability API",
+    "description": "API collection for medical product batch tracking system with blockchain integration",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/v1",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "batchId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "shipmentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"manufacturer@example.com\",\n    \"password\": \"password123\",\n    \"name\": \"John Doe\",\n    \"orgId\": 1,\n    \"orgName\": \"org1\",\n    \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', response.tokens.access.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"manufacturer@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('productId', response.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"barcode\": \"8901030865278\",\n    \"qrCode\": \"QR8901030865278\",\n    \"productName\": \"Paracetamol 500mg\",\n    \"pharmaceuticalForm\": \"tablet\",\n    \"strength\": \"500mg\",\n    \"packSize\": \"10 tablets per strip\",\n    \"manufacturerName\": \"PharmaCorp Industries\",\n    \"manufacturerSiteCode\": \"MFG-SITE-001\",\n    \"manufacturerLicenseNumber\": \"LIC-2023-0456\",\n    \"gmpApproval\": \"GMP-2023-789\",\n    \"therapeuticCategory\": \"Analgesic/Antipyretic\",\n    \"activeIngredients\": [\n        {\n            \"name\": \"Paracetamol\",\n            \"quantity\": \"500mg\"\n        }\n    ],\n    \"storageConditions\": \"Store in a cool, dry place below 30°C\",\n    \"transportTemperature\": \"2-25°C\",\n    \"transportHumidity\": \"< 60% RH\",\n    \"registrationNumber\": \"REG-2023-1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products?pageSize=20&searchTerm=Paracetamol",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                {
+                  "key": "pageSize",
+                  "value": "20"
+                },
+                {
+                  "key": "searchTerm",
+                  "value": "Paracetamol"
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "disabled": true
+                },
+                {
+                  "key": "bookmark",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"packSize\": \"20 tablets per strip\",\n    \"storageConditions\": \"Store in a cool, dry place below 25°C. Keep away from light.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Product History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products/history/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "history", "{{productId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Batches",
+      "item": [
+        {
+          "name": "Create Batch",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('batchId', response.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"batchNumber\": \"BATCH-2024-001-PARA\",\n    \"productId\": \"{{productId}}\",\n    \"manufacturingDate\": \"2024-01-15\",\n    \"expirationDate\": \"2026-01-14\",\n    \"quantity\": 10000,\n    \"unit\": \"tablets\",\n    \"serialNumbers\": [\n        \"SN2024001001\",\n        \"SN2024001002\",\n        \"SN2024001003\"\n    ],\n    \"gs1Code\": \"(01)08901030865278(21)SN2024001001(17)260114(10)BATCH-2024-001\",\n    \"manufacturingSiteCode\": \"MFG-SITE-001\",\n    \"manufacturingSiteName\": \"PharmaCorp Main Facility\",\n    \"manufacturingSiteAddress\": \"123 Pharma Street, Industrial Area, Mumbai 400001\",\n    \"gmpApproval\": \"GMP-2023-789\",\n    \"batchReleaseNumber\": \"BR-2024-0156\",\n    \"qualityControlDate\": \"2024-01-20\",\n    \"qualityControlPassed\": true,\n    \"storageTemperature\": \"15-25°C\",\n    \"storageHumidity\": \"< 60% RH\",\n    \"storageLightConditions\": \"Protected from light\",\n    \"storageSpecialInstructions\": \"Keep in original packaging. Do not freeze.\",\n    \"transportTemperature\": \"2-25°C\",\n    \"transportHumidity\": \"< 60% RH\",\n    \"transportHandlingInstructions\": \"Handle with care. Keep upright. Protect from direct sunlight.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/batches",
+              "host": ["{{baseUrl}}"],
+              "path": ["batches"]
+            }
+          }
+        },
+        {
+          "name": "Get All Batches",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/batches?productId={{productId}}&pageSize=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["batches"],
+              "query": [
+                {
+                  "key": "productId",
+                  "value": "{{productId}}"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20"
+                },
+                {
+                  "key": "status",
+                  "value": "manufactured",
+                  "disabled": true
+                },
+                {
+                  "key": "batchNumber",
+                  "value": "BATCH-2024",
+                  "disabled": true
+                },
+                {
+                  "key": "expiringBefore",
+                  "value": "2025-12-31",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Batch by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/batches/{{batchId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["batches", "{{batchId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Batch",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"released\",\n    \"qualityControlPassed\": true,\n    \"storageSpecialInstructions\": \"Keep in original packaging. Do not freeze. First in, first out (FIFO) rotation required.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/batches/{{batchId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["batches", "{{batchId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Batch Quantity - Reserve",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"reserve\",\n    \"quantity\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/batches/{{batchId}}/quantity",
+              "host": ["{{baseUrl}}"],
+              "path": ["batches", "{{batchId}}", "quantity"]
+            }
+          }
+        },
+        {
+          "name": "Update Batch Quantity - Ship",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"ship\",\n    \"quantity\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/batches/{{batchId}}/quantity",
+              "host": ["{{baseUrl}}"],
+              "path": ["batches", "{{batchId}}", "quantity"]
+            }
+          }
+        },
+        {
+          "name": "Get Batch History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/batches/history/{{batchId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["batches", "history", "{{batchId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shipments",
+      "item": [
+        {
+          "name": "Create Shipment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('shipmentId', response.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"description\": \"Pharmaceutical shipment - Paracetamol 500mg tablets\",\n    \"transportConditions\": {\n        \"temperature\": \"2-25°C\",\n        \"humidity\": \"< 60% RH\",\n        \"specialRequirements\": \"Temperature controlled vehicle required\"\n    },\n    \"shipmentCondition\": \"temperature-controlled\",\n    \"milestones\": [\n        {\n            \"name\": \"Pickup from manufacturer\",\n            \"expectedDate\": \"2024-01-25T10:00:00Z\"\n        },\n        {\n            \"name\": \"Arrival at distribution center\",\n            \"expectedDate\": \"2024-01-25T16:00:00Z\"\n        },\n        {\n            \"name\": \"Delivery to pharmacy\",\n            \"expectedDate\": \"2024-01-26T10:00:00Z\"\n        }\n    ],\n    \"pickupTimestamp\": \"2024-01-25T10:00:00Z\",\n    \"deliveryTimestamp\": \"2024-01-26T10:00:00Z\",\n    \"origin\": {\n        \"name\": \"PharmaCorp Manufacturing Facility\",\n        \"address\": \"123 Pharma Street, Industrial Area, Mumbai 400001\",\n        \"coordinates\": {\n            \"latitude\": 19.0760,\n            \"longitude\": 72.8777\n        }\n    },\n    \"destination\": {\n        \"name\": \"City Central Pharmacy\",\n        \"address\": \"456 Healthcare Avenue, New Delhi 110001\",\n        \"coordinates\": {\n            \"latitude\": 28.6139,\n            \"longitude\": 77.2090\n        }\n    },\n    \"mode\": \"road\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shipments",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments"]
+            }
+          }
+        },
+        {
+          "name": "Get All Shipments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/shipments?assetType=shipment&pageSize=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments"],
+              "query": [
+                {
+                  "key": "assetType",
+                  "value": "shipment"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20"
+                },
+                {
+                  "key": "bookmark",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Send Shipment (Carrier)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"{{shipmentId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shipments/send",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments", "send"]
+            },
+            "description": "To be used by Carrier (orgId: 2) to mark shipment as in transit"
+          }
+        },
+        {
+          "name": "Update Shipment (Complete Delivery)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"{{shipmentId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shipments/update",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments", "update"]
+            },
+            "description": "To be used by Consignee/Pharmacy (orgId: 3) to mark shipment as delivered"
+          }
+        },
+        {
+          "name": "Add IoT Device",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"DEVICE-TEMP-001\",\n    \"deviceType\": \"temperature-sensor\",\n    \"manufacturer\": \"SensorTech Inc\",\n    \"model\": \"TempTrack-Pro-2024\",\n    \"serialNumber\": \"TT2024001234\",\n    \"calibrationDate\": \"2024-01-01\",\n    \"calibrationExpiry\": \"2025-01-01\",\n    \"specifications\": {\n        \"temperatureRange\": \"-20°C to 60°C\",\n        \"accuracy\": \"±0.5°C\",\n        \"batteryLife\": \"12 months\",\n        \"transmissionInterval\": \"5 minutes\"\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shipments/device",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments", "device"]
+            },
+            "description": "Register an IoT device (only Carrier can add devices)"
+          }
+        },
+        {
+          "name": "Add Sensor Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"deviceID\": \"DEVICE-TEMP-001\",\n    \"shipmentId\": \"{{shipmentId}}\",\n    \"type\": \"temperature\",\n    \"value\": {\n        \"temperature\": 23.5,\n        \"unit\": \"celsius\",\n        \"timestamp\": \"2024-01-25T12:30:00Z\",\n        \"location\": {\n            \"latitude\": 22.5726,\n            \"longitude\": 75.1329\n        },\n        \"status\": \"normal\",\n        \"batteryLevel\": 85\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shipments/sensor-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments", "sensor-data"]
+            },
+            "description": "Add temperature sensor data (only Carrier can add)"
+          }
+        },
+        {
+          "name": "Add Sensor Data - Temperature Violation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"deviceID\": \"DEVICE-TEMP-001\",\n    \"shipmentId\": \"{{shipmentId}}\",\n    \"type\": \"temperature-violation\",\n    \"value\": {\n        \"temperature\": 28.5,\n        \"unit\": \"celsius\",\n        \"timestamp\": \"2024-01-25T14:15:00Z\",\n        \"location\": {\n            \"latitude\": 24.8607,\n            \"longitude\": 74.6297\n        },\n        \"status\": \"alert\",\n        \"violationType\": \"temperature-exceeded\",\n        \"threshold\": \"25°C\",\n        \"duration\": \"15 minutes\",\n        \"batteryLevel\": 82\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shipments/sensor-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments", "sensor-data"]
+            },
+            "description": "Add temperature violation event"
+          }
+        },
+        {
+          "name": "Get IoT Events",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/shipments?assetType=event&shipmentId={{shipmentId}}&pageSize=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments"],
+              "query": [
+                {
+                  "key": "assetType",
+                  "value": "event"
+                },
+                {
+                  "key": "shipmentId",
+                  "value": "{{shipmentId}}"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Get all IoT events for a specific shipment"
+          }
+        },
+        {
+          "name": "Get Shipment History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/shipments/history/{{shipmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["shipments", "history", "{{shipmentId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assets (Generic)",
+      "item": [
+        {
+          "name": "Create Asset",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Medical Equipment Asset\",\n    \"type\": \"equipment\",\n    \"description\": \"Temperature monitoring equipment for cold chain\",\n    \"metadata\": {\n        \"manufacturer\": \"EquipCorp\",\n        \"model\": \"TC-2024\"\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assets",
+              "host": ["{{baseUrl}}"],
+              "path": ["assets"]
+            }
+          }
+        },
+        {
+          "name": "Get Asset by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/assets/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["assets", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "asset-id-here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Asset History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/assets/history/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["assets", "history", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "asset-id-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

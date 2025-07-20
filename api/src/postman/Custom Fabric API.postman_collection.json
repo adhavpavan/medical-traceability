@@ -1,0 +1,438 @@
+{
+	"info": {
+		"_postman_id": "ffbd06bd-2884-4055-96b8-13ea5fb0f75a",
+		"name": "Custom Fabric API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2603130",
+		"_collection_link": "https://pavanadhav.postman.co/workspace/a0bfec86-4bf0-43c5-88cb-2e77116ce2a2/collection/2603130-ffbd06bd-2884-4055-96b8-13ea5fb0f75a?action=share&source=collection_link&creator=2603130"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login User - Org1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json()",
+									"pm.environment.set(\"user-token\", data.payload.access.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMzM0QGdtYWlsLmNvbSIsInR5cGUiOiJhZG1pbiIsIm9yZ0lkIjoyLCJuYW1lIjoiam9uIiwiaWQiOiI2NjFmNjUwOGJkZjNkYzhiYzc4ZTM4ZDMiLCJkZXBhcnRtZW50IjoibGVnYWwiLCJvcmdOYW1lIjoiT3JnMiIsImlhdCI6MTcxMzQ0MzAxNiwiZXhwIjoxNzEzNjE1ODE2LCJ0b2tlblR5cGUiOiJhY2Nlc3MifQ.LVxo68RqOV4-XJM9WOCNBETQLXlHFvWrqsaKWnCZIOE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user111@gmail.com\",\n    \"password\": \"Admin@12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assets",
+			"item": [
+				{
+					"name": "Create Asset",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{upa-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"color\": \"White\",\n        \"make\": \"Audi\",\n        \"owner\": \"Pavan\",\n        \"model\":\"Audi R8\",\n        \"appraisedValue\": \"4,000,000\"\n        \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/assets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"assets"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Land",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"color\": \"White\",\n        \"make\": \"Audi\",\n        \"owner\": \"Pavan\",\n        \"model\":\"Audi R8\",\n        \"appraisedValue\": \"4,000,000\"\n        \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/v1/assets",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"v1",
+										"assets"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Security-Policy",
+									"value": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "338"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"152-Rs78TUuALENUhmspBHeneVa7QD0\""
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Oct 2024 04:04:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Asset data created successfully\",\n    \"status\": 201,\n    \"timestamp\": \"2024-10-31T04:04:48.415Z\",\n    \"payload\": {\n        \"id\": \"ab6f510e-3e7b-41e7-a924-ffe757f26c05\",\n        \"color\": \"White\",\n        \"make\": \"Audi\",\n        \"owner\": \"Pavan\",\n        \"model\": \"Audi R8\",\n        \"appraisedValue\": \"4,000,000\",\n        \"createAt\": \"2024-10-31T04:04:46.133Z\",\n        \"updatedAt\": \"2024-10-31T04:04:46.133Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get AssetBy Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"landCode\": \"HK1222\",\n        \"state\": \"Khartoum\",\n        \"city\": \"Omdurman\",\n        \"square\": \"4-2\",\n        \"plotNo\": 1046,\n        \"longitude\": 43.567432,\n        \"latitude\": 88.867867,\n        \"area\": \"Almulazmen\",\n        \"class\": \"A\",\n        \"planDate\": \"2024-09-28T07:42:37.448Z\",\n        \"ownerName\": \"user1\",\n        \"ownerID\": \"user1@gmail.com\",\n        // version:1,\n        \"metadata\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/assets/ab6f510e-3e7b-41e7-a924-ffe757f26c05",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"assets",
+								"ab6f510e-3e7b-41e7-a924-ffe757f26c05"
+							],
+							"query": [
+								{
+									"key": "bookmark",
+									"value": "g1AAAAB4eJzLYWBgYMpgSmHgKy5JLCrJTq2MT8lPzkzJBYqrmKYZpZqaGBrpJloaG-iaGBom6VoamiXpJpmlGZknm6eaGycZgvRywPQSrSsLAFCSHxU",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get AssetBy Id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"landCode\": \"HK1222\",\n        \"state\": \"Khartoum\",\n        \"city\": \"Omdurman\",\n        \"square\": \"4-2\",\n        \"plotNo\": 1046,\n        \"longitude\": 43.567432,\n        \"latitude\": 88.867867,\n        \"area\": \"Almulazmen\",\n        \"class\": \"A\",\n        \"planDate\": \"2024-09-28T07:42:37.448Z\",\n        \"ownerName\": \"user1\",\n        \"ownerID\": \"user1@gmail.com\",\n        // version:1,\n        \"metadata\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/v1/assets/ab6f510e-3e7b-41e7-a924-ffe757f26c05",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"v1",
+										"assets",
+										"ab6f510e-3e7b-41e7-a924-ffe757f26c05"
+									],
+									"query": [
+										{
+											"key": "bookmark",
+											"value": "g1AAAAB4eJzLYWBgYMpgSmHgKy5JLCrJTq2MT8lPzkzJBYqrmKYZpZqaGBrpJloaG-iaGBom6VoamiXpJpmlGZknm6eaGycZgvRywPQSrSsLAFCSHxU",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Security-Policy",
+									"value": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "333"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"14d-C1xnngOQyZIdFgqCVj37Fv1E9RU\""
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Oct 2024 04:08:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Asset fetched successfully\",\n    \"status\": 200,\n    \"timestamp\": \"2024-10-31T04:08:44.890Z\",\n    \"payload\": {\n        \"appraisedValue\": \"4,000,000\",\n        \"color\": \"White\",\n        \"createAt\": \"2024-10-31T04:04:46.133Z\",\n        \"id\": \"ab6f510e-3e7b-41e7-a924-ffe757f26c05\",\n        \"make\": \"Audi\",\n        \"model\": \"Audi R8\",\n        \"owner\": \"Pavan\",\n        \"updatedAt\": \"2024-10-31T04:04:46.133Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get AssetBy Id Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"landCode\": \"HK1222\",\n        \"state\": \"Khartoum\",\n        \"city\": \"Omdurman\",\n        \"square\": \"4-2\",\n        \"plotNo\": 1046,\n        \"longitude\": 43.567432,\n        \"latitude\": 88.867867,\n        \"area\": \"Almulazmen\",\n        \"class\": \"A\",\n        \"planDate\": \"2024-09-28T07:42:37.448Z\",\n        \"ownerName\": \"user1\",\n        \"ownerID\": \"user1@gmail.com\",\n        // version:1,\n        \"metadata\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/assets/history/ab6f510e-3e7b-41e7-a924-ffe757f26c05",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"assets",
+								"history",
+								"ab6f510e-3e7b-41e7-a924-ffe757f26c05"
+							],
+							"query": [
+								{
+									"key": "bookmark",
+									"value": "g1AAAAB4eJzLYWBgYMpgSmHgKy5JLCrJTq2MT8lPzkzJBYqrmKYZpZqaGBrpJloaG-iaGBom6VoamiXpJpmlGZknm6eaGycZgvRywPQSrSsLAFCSHxU",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

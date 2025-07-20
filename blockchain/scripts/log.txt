@@ -1,0 +1,2 @@
+Installed chaincodes on peer:
+Package ID: producer-distributor-channel-chaincode_1:a02f6cb6ba0e6b96a3901e931446f717147fe8f588fbdfce2281310499c32cd0, Label: producer-distributor-channel-chaincode_1

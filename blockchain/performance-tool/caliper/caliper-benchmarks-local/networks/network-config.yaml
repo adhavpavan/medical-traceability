@@ -1,0 +1,26 @@
+name: Caliper Benchmarks
+version: 2.0.0
+caliper:
+  blockchain: fabric
+info:
+  Version: 2.1.0
+  Size: 5 Orgs with 1 Peer
+  Orderer: Raft
+  Distribution: Single Host
+  StateDB: CouchDB
+channels:
+  - channelName: producer-distributor-channel
+    contracts:
+      - id: producer-distributor-channel-chaincode
+organizations:
+  - mspid: manufacturerMSP
+    identities:
+      certificates:
+        - name: User1
+          clientPrivateKey:
+            path: crypto-config/peerOrganizations/manufacturer.com/users/User1@manufacturer.com/msp/keystore/priv_sk
+          clientSignedCert:
+            path: crypto-config/peerOrganizations/manufacturer.com/users/User1@manufacturer.com/msp/signcerts/cert.pem
+    connectionProfile:
+      path: crypto-config/peerOrganizations/manufacturer.com/connection-manufacturer-caliper.json
+      discover: true

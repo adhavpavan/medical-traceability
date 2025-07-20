@@ -1,0 +1,68 @@
+{
+  "name": "first network (ignored)",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "client": {
+    "tlsEnable": true,
+    "caCredential": {
+      "id": "admin",
+      "password": "adminpw"
+    },
+    "adminCredential": {
+      "id": "exploreradmin",
+      "password": "exploreradminpw",
+      "affiliation": "manufacturer.department1"
+    },
+    "enableAuthentication": true,
+    "organization": "manufacturerMSP",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "300"
+        },
+        "orderer": "300"
+      }
+    }
+  },
+  "channels": {
+    "producer-distributor-channel": {
+      "peers": {
+        "peer1.manufacturer.com": {}
+      },
+      "connection": {
+        "timeout": {
+          "peer": {
+            "endorser": "6000",
+            "eventHub": "6000",
+            "eventReg": "6000"
+          }
+        }
+      }
+    }
+  },
+  "organizations": {
+    "manufacturerMSP": {
+      "mspid": "manufacturerMSP",
+      "adminPrivateKey": {
+        "path": "/etc/data/peerOrganizations/manufacturer.com/users/Admin@manufacturer.com/msp/keystore/priv_sk"
+      },
+      "peers": [
+        "peer1.manufacturer.com"
+      ],
+      "signedCert": {
+        "path": "/etc/data/peerOrganizations/manufacturer.com/users/Admin@manufacturer.com/msp/signcerts/cert.pem"
+      }
+    }
+  },
+  "peers": {
+    "peer1.manufacturer.com": {
+      "tlsCACerts": {
+        "path": "/etc/data/peerOrganizations/manufacturer.com/peers/peer1.manufacturer.com/tls/ca.crt"
+      },
+      "url": "grpcs://peer1.manufacturer.com:7051",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer1.manufacturer.com"
+      }
+    }
+  }
+}
