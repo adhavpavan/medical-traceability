@@ -29,7 +29,7 @@ const addShipment = async (shipmentData, user) => {
   let id = new mongoose.Types.ObjectId()
   try {
     let dateTime = new Date();
-    let orgName = `org${user.orgId}`;
+    let orgName = user.orgName || `org${user.orgId}`;
 
     if(parseInt(user.orgId) != 1){
       throw new Error('You are not authorized to create shipment')
@@ -74,7 +74,7 @@ const addShipment = async (shipmentData, user) => {
     );
     console.log("------shipment-------", shipment)
 
-    await contract.submitTransaction("CreateShipment", JSON.stringify(shipment));
+    await contract.submitTransaction("CreateAsset", JSON.stringify(shipment));
 
     return shipment;
   } catch (error) {
@@ -116,7 +116,7 @@ const queryAssetsWithPagination = async (filter, user) => {
       query,
       filter.pageSize,
       filter.bookmark || '',
-      filter.orgName,
+      user.orgName || filter.orgName,
       user.email,
       NETWORK_ARTIFACTS_DEFAULT.CHANNEL_NAME,
       NETWORK_ARTIFACTS_DEFAULT.CHAINCODE_NAME
@@ -256,11 +256,11 @@ const addIOTData = async (iotData, user) => {
   let id = new mongoose.Types.ObjectId()
   try {
     let dateTime = new Date();
-    let orgName = `org${user.orgId}`;
+    let orgName = user.orgName || `org${user.orgId}`;
 
-    if(user.orgId != 2){
-      throw new Error('You are not authorized to create shipment')
-    }
+    // if(user.orgId != 2){
+    //   throw new Error('You are not authorized to create shipment')
+    // }
 
     const contract = await getContractObject(
       orgName,
@@ -283,7 +283,7 @@ const addIOTData = async (iotData, user) => {
     }
 
     // let ownership = await contract.submitTransaction('', ownershipId)
-     await contract.submitTransaction('AddIOTEvent', JSON.stringify(iotDataJSON), iotData.shipmentId);
+     await contract.submitTransaction('CreateAsset', JSON.stringify(iotDataJSON), iotData.shipmentId);
     return iotDataJSON;
   } catch (error) {
     console.log(error);
@@ -307,11 +307,11 @@ const addIOTDeviceData = async (iotDeviceData, user) => {
   let id = new mongoose.Types.ObjectId()
   try {
     let dateTime = new Date();
-    let orgName = `org${user.orgId}`;
+    let orgName = user.orgName || `org${user.orgId}`;
 
-    if(user.orgId != 2){
-      throw new Error('You are not authorized to create device, only carrier can add device')
-    }
+    // if(user.orgId != 2){
+    //   throw new Error('You are not authorized to create device, only carrier can add device')
+    // }
 
     const contract = await getContractObject(
       orgName,
@@ -328,7 +328,7 @@ const addIOTDeviceData = async (iotDeviceData, user) => {
     iotDeviceData.createBy= user.email
     iotDeviceData.updatedBy= user.email
 
-     await contract.submitTransaction('AddIOTDevice', JSON.stringify(iotDeviceData));
+     await contract.submitTransaction('CreateAsset', JSON.stringify(iotDeviceData));
     return iotDeviceData;
   } catch (error) {
     console.log(error);

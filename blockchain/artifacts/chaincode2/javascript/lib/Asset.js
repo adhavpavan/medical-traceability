@@ -27,6 +27,52 @@ class Performance extends Contract {
     return JSON.stringify(asset);
 }
 
+async AddIOTEvent(ctx, iotDeviceEventData) {
+  try {
+   
+
+    // const event = await ctx.stub.getState(iotDeviceEventData);
+    let eventJSON = JSON.parse(iotDeviceEventData);
+
+    const batch = await ctx.stub.getState(eventJSON.batchId);
+    let batchtJSON = JSON.parse(batch);
+
+    // Adding event here
+    await ctx.stub.putState(eventJSON.id, iotDeviceEventData);
+
+    // Verifying if any incident with this data
+    if(batchtJSON?.shipmentConditionType == 'Temperature'){
+      console.log("--------inside temperarture---------",batchtJSON?.shipmentCondition, eventJSON )
+      if (batchtJSON?.shipmentCondition.minTemperature > eventJSON?.value?.temperature ||
+        batchtJSON?.shipmentCondition.maxTemperature < eventJSON?.value?.temperature ){
+
+          let incident = {
+            "id": 'Incident:'+batchtJSON.id+'-' +eventJSON.id,
+            docType:'INCIDENT',
+            shipmentId:eventJSON.shipmentId,
+            batchId:eventJSON.batchId,
+            eventId:eventJSON.id,
+            data:{
+                value: eventJSON.value.temperature,
+                minValue: batchtJSON?.shipmentCondition.minTemperature,
+                maxValue: batchtJSON?.shipmentCondition.maxTemperature
+            },
+            "incidentType": "Temperatrure Breach",
+            "creationTime": eventJSON.createAt,
+            "closingTime": eventJSON.closingTime,
+          }
+          // Adding incident
+          await ctx.stub.putState(incident.id, Buffer.from(JSON.stringify(incident)))
+        }else {
+          console.log("--------satisfying condition temperarture---------", )
+        }
+    }
+    return ctx.stub.getTxID();
+  } catch (err) {
+    throw new Error(err.stack);
+  }
+}
+
   // ReadAsset returns the asset stored in the world state with given id.
   async getAssetByID(ctx, id) {
     try {

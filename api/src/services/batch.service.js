@@ -47,8 +47,12 @@ const createBatch = async (batchData, user) => {
         specialInstructions: batchData.storageSpecialInstructions
       },
       transportInstructions: {
-        temperature: batchData.transportTemperature,
-        humidity: batchData.transportHumidity,
+        // temperature: batchData.transportTemperature,
+        temperatureHigh:batchData.temperatureHigh,
+        temperatureLow:batchData.temperatureLow,
+        humidityHigh:batchData.humidityHigh,
+        humidityLow:batchData.humidityLow,
+        // humidity: batchData.transportHumidity,
         handlingInstructions: batchData.transportHandlingInstructions
       },
       status: 'manufactured',

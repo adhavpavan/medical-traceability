@@ -5,3 +5,5 @@ fabric-data
 
 fabric-ca
 crypto-config
+*.log
+*-audit.json
