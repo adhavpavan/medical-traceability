@@ -8,15 +8,13 @@ const {
   addDevice,
   getShipments,
   getHistoryById,
-  getSignedURL
+  getSignedURL,
+  getShipmentById
 } = require('../../controllers/shipment.controller');
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(auth, getShipments)
-  .post(auth, createShipment);
+
 
 router
   .route('/send')
@@ -41,5 +39,12 @@ router
 router
   .route('/doc/:docId/url')
   .get(auth, getSignedURL);
+
+  router.route('/:id').get(auth, getShipmentById);
+
+  router
+  .route('/')
+  .get(auth, getShipments)
+  .post(auth, createShipment);
 
 module.exports = router;

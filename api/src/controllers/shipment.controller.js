@@ -9,7 +9,8 @@ const {
   addIOTDeviceData,
   queryAssetsWithPagination,
   queryHistoryById,
-  getDocSignedURL
+  getDocSignedURL,
+  queryShipmentById
 } = require('../services/shipment.service');
 
 const createShipment = catchAsync(async (req, res) => {
@@ -47,13 +48,20 @@ const getShipments = catchAsync(async (req, res) => {
   const filter = {
     assetType: req.query.assetType || 'shipment',
     shipmentId: req.query.shipmentId,
-    orgName: `org${user.orgId}`,
+    // orgName: `org${user.orgId}`,
     pageSize: parseInt(req.query.pageSize) || 20,
     bookmark: req.query.bookmark
   };
   
   const data = await queryAssetsWithPagination(filter, user);
   res.status(httpStatus.OK).send(getSuccessResponse(httpStatus.OK, 'Assets fetched successfully', data));
+});
+
+const getShipmentById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  let { user } = req.loggerInfo;
+  const data = await queryShipmentById(id, user);
+  res.status(httpStatus.OK).send(getSuccessResponse(httpStatus.OK, 'Shipment fetched successfully', data));
 });
 
 const getHistoryById = catchAsync(async (req, res) => {
@@ -78,5 +86,6 @@ module.exports = {
   addDevice,
   getShipments,
   getHistoryById,
-  getSignedURL
+  getSignedURL,
+  getShipmentById
 };

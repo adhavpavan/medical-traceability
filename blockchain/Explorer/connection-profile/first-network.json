@@ -11,10 +11,10 @@
     "adminCredential": {
       "id": "exploreradmin",
       "password": "exploreradminpw",
-      "affiliation": "manufacturer.department1"
+      "affiliation": "regulator.department1"
     },
     "enableAuthentication": true,
-    "organization": "manufacturerMSP",
+    "organization": "regulatorMSP",
     "connection": {
       "timeout": {
         "peer": {
@@ -27,7 +27,7 @@
   "channels": {
     "producer-distributor-channel": {
       "peers": {
-        "peer1.manufacturer.com": {}
+        "peer1.regulator.com": {}
       },
       "connection": {
         "timeout": {
@@ -41,27 +41,27 @@
     }
   },
   "organizations": {
-    "manufacturerMSP": {
-      "mspid": "manufacturerMSP",
+    "regulatorMSP": {
+      "mspid": "regulatorMSP",
       "adminPrivateKey": {
-        "path": "/etc/data/peerOrganizations/manufacturer.com/users/Admin@manufacturer.com/msp/keystore/priv_sk"
+        "path": "/etc/data/peerOrganizations/regulator.com/users/Admin@regulator.com/msp/keystore/priv_sk"
       },
       "peers": [
-        "peer1.manufacturer.com"
+        "peer1.regulator.com"
       ],
       "signedCert": {
-        "path": "/etc/data/peerOrganizations/manufacturer.com/users/Admin@manufacturer.com/msp/signcerts/cert.pem"
+        "path": "/etc/data/peerOrganizations/regulator.com/users/Admin@regulator.com/msp/signcerts/cert.pem"
       }
     }
   },
   "peers": {
-    "peer1.manufacturer.com": {
+    "peer1.regulator.com": {
       "tlsCACerts": {
-        "path": "/etc/data/peerOrganizations/manufacturer.com/peers/peer1.manufacturer.com/tls/ca.crt"
+        "path": "/etc/data/peerOrganizations/regulator.com/peers/peer1.regulator.com/tls/ca.crt"
       },
-      "url": "grpcs://peer1.manufacturer.com:7051",
+      "url": "grpcs://peer1.regulator.com:10051",
       "grpcOptions": {
-        "ssl-target-name-override": "peer1.manufacturer.com"
+        "ssl-target-name-override": "peer1.regulator.com"
       }
     }
   }

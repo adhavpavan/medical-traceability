@@ -14,9 +14,10 @@ const BLOCKCHAIN_DOC_TYPE = {
   SHIPMENT: 'shipment',
   DEVICE: 'device',
   EVENT: 'event',
-  INCIDENT: 'incident',
+  INCIDENT: 'INCIDENT',
   PRODUCT: 'product',
-  BATCH: 'batch'
+  BATCH: 'batch',
+  SENSOR_DATA: 'sensor_data'
 }
 const SHIPMENT_STATUS = {
   PENDING: 'pending',
@@ -27,6 +28,8 @@ const SHIPMENT_STATUS = {
 const NETWORK_ARTIFACTS_DEFAULT ={
   CHANNEL_NAME: 'producer-distributor-channel',
   CHAINCODE_NAME: 'producer-distributor-channel-chaincode',
+  CHANNEL_NAME_2: 'distributor-retailer-channel',
+  CHAINCODE_NAME_2: 'distributor-retailer-channel-chaincode',
   QSCC:'qscc'
 }
 module.exports = {
