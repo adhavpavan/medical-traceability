@@ -3,7 +3,7 @@ networks:
   test: null
 services:
   ca_manufacturer:
-    image: hyperledger/fabric-ca
+    image: hyperledger/fabric-ca:1.5.15
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.manufacturer.com
@@ -19,7 +19,7 @@ services:
     networks:
       - test
   ca_distributor:
-    image: hyperledger/fabric-ca
+    image: hyperledger/fabric-ca:1.5.15
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.distributor.com
@@ -35,7 +35,7 @@ services:
     networks:
       - test
   ca_pharmacy:
-    image: hyperledger/fabric-ca
+    image: hyperledger/fabric-ca:1.5.15
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.pharmacy.com
@@ -51,7 +51,7 @@ services:
     networks:
       - test
   ca_regulator:
-    image: hyperledger/fabric-ca
+    image: hyperledger/fabric-ca:1.5.15
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.regulator.com
@@ -67,7 +67,7 @@ services:
     networks:
       - test
   ca_orderer:
-    image: hyperledger/fabric-ca
+    image: hyperledger/fabric-ca:1.5.15
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.orderer.com

@@ -34,7 +34,7 @@ services:
       - ./channel/crypto-config/peerOrganizations/manufacturer.com/peers/peer1.manufacturer.com:/etc/hyperledger/fabric
       - /var/run/docker.sock:/host/var/run/docker.sock
       - ./channel/config/core.yaml:/etc/hyperledger/peercfg/core.yaml
-      # - ./fabric-data/peer1.manufacturer.com:/var/hyperledger/production
+      - ./fabric-data/peer1.manufacturer.com:/var/hyperledger/production
     networks:
       - test
   couchdb1:
@@ -80,7 +80,7 @@ services:
       - ./channel/crypto-config/peerOrganizations/distributor.com/peers/peer1.distributor.com:/etc/hyperledger/fabric
       - /var/run/docker.sock:/host/var/run/docker.sock
       - ./channel/config/core.yaml:/etc/hyperledger/peercfg/core.yaml
-      # - ./fabric-data/peer1.distributor.com:/var/hyperledger/production
+      - ./fabric-data/peer1.distributor.com:/var/hyperledger/production
     networks:
       - test
   couchdb2:
@@ -126,7 +126,7 @@ services:
       - ./channel/crypto-config/peerOrganizations/pharmacy.com/peers/peer1.pharmacy.com:/etc/hyperledger/fabric
       - /var/run/docker.sock:/host/var/run/docker.sock
       - ./channel/config/core.yaml:/etc/hyperledger/peercfg/core.yaml
-      # - ./fabric-data/peer1.pharmacy.com:/var/hyperledger/production
+      - ./fabric-data/peer1.pharmacy.com:/var/hyperledger/production
     networks:
       - test
   couchdb3:
@@ -172,7 +172,7 @@ services:
       - ./channel/crypto-config/peerOrganizations/regulator.com/peers/peer1.regulator.com:/etc/hyperledger/fabric
       - /var/run/docker.sock:/host/var/run/docker.sock
       - ./channel/config/core.yaml:/etc/hyperledger/peercfg/core.yaml
-      # - ./fabric-data/peer1.regulator.com:/var/hyperledger/production
+      - ./fabric-data/peer1.regulator.com:/var/hyperledger/production
     networks:
       - test
   couchdb4:
@@ -219,7 +219,7 @@ services:
     volumes:
       - ./channel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.com/msp:/var/hyperledger/orderer/msp
       - ./channel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.com/tls:/var/hyperledger/orderer/tls
-      # - ./fabric-data/orderer1:/var/hyperledger/production
+      - ./fabric-data/orderer1:/var/hyperledger/production
   orderer2.com:
     container_name: orderer2.com
     image: hyperledger/fabric-orderer:2.5.5
@@ -254,7 +254,7 @@ services:
     volumes:
       - ./channel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer2.com/msp:/var/hyperledger/orderer/msp
       - ./channel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer2.com/tls:/var/hyperledger/orderer/tls
-      # - ./fabric-data/orderer2:/var/hyperledger/production
+      - ./fabric-data/orderer2:/var/hyperledger/production
   orderer3.com:
     container_name: orderer3.com
     image: hyperledger/fabric-orderer:2.5.5
@@ -289,4 +289,4 @@ services:
     volumes:
       - ./channel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer3.com/msp:/var/hyperledger/orderer/msp
       - ./channel/crypto-config/ordererOrganizations/orderer.com/orderers/orderer3.com/tls:/var/hyperledger/orderer/tls
-      # - ./fabric-data/orderer3:/var/hyperledger/production
+      - ./fabric-data/orderer3:/var/hyperledger/production
