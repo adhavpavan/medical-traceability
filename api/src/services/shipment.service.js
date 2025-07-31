@@ -234,13 +234,29 @@ const updateShipment = async (shipmentData, user) => {
     shipmentJSON.updatedBy = user.email;
     shipmentJSON.deliveryTimestamp = dateTime;
 
-    shipmentJSON.comment = shipmentJSON.comment || [];
-    shipmentJSON.comment.push({
-      title: 'Shipment Delivered',
-      description: `All event checked and verified, hence marking this shipment as delivered`,
-      createdBy: user.email,
-      createAt: dateTime,
-    });
+    if(shipmentData.status == SHIPMENT_STATUS.REJECTED){
+      shipmentJSON.status = SHIPMENT_STATUS.REJECTED;
+      shipmentJSON.comment = shipmentJSON.comment || [];
+      shipmentJSON.comment.push({
+        title: 'Shipment Delivery Rejected',
+        description:shipmentData.comment || `All IOT sensor event reading checked and found to be not in the range of temperature and humidity, hence marking this shipment as rejected`,
+        createdBy: user.email,
+        createAt: dateTime,
+      });
+    }else if(shipmentData.status == SHIPMENT_STATUS.DELIVERED){
+      shipmentJSON.status = SHIPMENT_STATUS.DELIVERED;
+      shipmentJSON.comment = shipmentJSON.comment || [];
+      shipmentJSON.comment.push({
+        title: 'Shipment Delivered',
+        description: shipmentData.comment || `All IOT sensor event checked and verified, hence marking this shipment as delivered`,
+        createdBy: user.email,
+        createAt: dateTime,
+      });
+    } else {
+      throw new Error('Invalid status, only rejected and delivered status are allowed');
+    }
+
+   
 
     await contract.submitTransaction('CreateAsset', JSON.stringify(shipmentJSON));
     return shipmentJSON;
